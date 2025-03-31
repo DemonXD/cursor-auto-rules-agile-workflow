@@ -1,67 +1,104 @@
-# Cursor Automatic Rules Generation with Agile Cursor Workflow Template
+# BMad's Best Practices Cursor Custom Agents and Rules Generator
 
-**IMPORTANT UPDATE NOTE**
+BMad Version: 3.0 (March 30, 2025)
+Cursor Version: 0.48+
 
-Cursor changes quite frequently with updates - global rules are now best defined with the alwaysApply: true - but the description field must still always be specified (at least as it seems to be operating now) with v 0.46.x - this might change in 0.47+.
+The name of the repo has changed to BMad Cursor Master Workflow Agent and Rules - this is still the ever evolving same project regarding rules best practices, but its evolving and expanding in features and capability as cursor evolves, becoming more and more powerful to meet the needs of the Cursor and AI Development community, as this will expand beyond cursor.
 
-Also - to have the best success with auto generation of rules - update your cursor user or workspace settings to add the following object to the json object (disabling the special ui for .mdc files) - this will cure the issues many have reported around not being able to auto generate and have the file save successfully occasionally.
+## Massive Upgrade - Please read for the BEST cursor experience to date - this will change everything - March 31, 2025
 
-```json
-"workbench.editorAssociations": {
-    "*.mdc": "default"
-  }
-```
+### Big fix for Agent AutoSelect Rules
 
-**One more NOTE to remember** - cursor 'edit' mode will work in generating new files - but does not automatically pick up the rules without adding the rule to the context. Agent mode on the other hand will find the rule, load it, and follow it properly. So for example, if you are in edit mode and ask that a rule be created - you might see a rule get generated at the root of the project or some other random odd location without giving it the 000 rule context - or better yet, doing it with Agent mode.
+Thank you to feedback from the community around this repo and in the cursor forums - an idea sparked about the description field that has been verified to be an amazing boost to agent auto selection of rules, becoming almost nearly not flaky - longer descriptions that really clearly tell it what types of scenarios or context it applies to - this was in the last version of this repo hidden away in more detail in the context that was broken by recent cursor optimization improvements to only consider the description for rule section! The rule-generating-agent has been updated to support this, integrating what was the context into the description field basically, further optimizing it to where the agent would have to be really dumb to not select it in the right scenario, or much easier to correct it!
 
-Also - a new feature .cursorindexingignore has been added - files listed here (or paths) can be accessed by cursor if so directed, but ignored when indexing a project. With this in mind, all templates have been moved to a .cursor/templates folder and are pattern included in the .cursorindexingignore file, but not in the .cursorignore. XNotes remains in the .cursorignore file to serve the original purpose (a place to hold files that need to move elsewhere to be used)
+All example rules in the repo have been updated - and a new agent select typescript rule example has also been added, that I have tested and have confirmed loads reliably.
 
-[Video Demo and Walkthrough](https://youtu.be/jEhvwYkI-og) - More cursor videos coming so please subscribe if you like the video!
+### Game Changer Custom Agent Generation Tools and Rule - the future of workflows is multi tab custom agents!
 
-NOTE: This has been tested with Claud Sonnet 3.5, 3.7 and 3.7 thinking - YMMV with other models reliability.
+New in the repo - example modes.json file to define your custom agents along with a template and rule to help you create these. The repo no includes in xnotes a custom-agents.md file, an example of what could be used in a prompt to cursor to then use the rule and template to generate the modes.json! While not officially used by cursor - the file will be similar to what they will release soon, but in the meantime can help you create the cursors by giving you the options to enter into the gui to create the custom agents (ensure you enable this current beta feature in the cursor settings). As soon as the version comes out to support it in cursor, this will be updated so that the rule can add to or update the new format once I have the new version that supports in in the coming weeks. But for now this is the best option, and much better than trying to manually type into the gui's tiny window for custom agent instructions. Check out .cursor/modes.json for the custom agents I am using (and still constantly tweaking).
 
-This is a template for establishing automatic generation of self improving granular rules for AI agents using Cursor's rule system. The core philosophy is that users should never need to manually create or update rules - instead, the AI agent handles rule creation and maintenance through natural language requests in a consistent format and style that:
+In the future I will start to have less rules - for example I am not using the manual workflow anymore as instead I talk to the proper agent in a tab that basically has the workflow built into their instruction set.
 
-- Ensures Rules are used automatically when appropriate
-- Used specifically if desired on demand
+### New Video Coming Soon!
 
-> 💡 **Note:** For a complete guide to the Agile-Cursor Workflow system that helps manage your project with exceptional memory and consistency, see [Agile Workflow Documentation](docs/agile-readme.md).
+By popular request - I will have a video up within the week showing the exact way to leverage the power of agile roles and ways of working to enhance your coding with AI Agents, wether vibe coding or deep in the weeds of brownfield, these new cursor features combined with this approach is a real gamechanger to past flakiness and random forgetfulness of the agents.
 
-## IMPORTANT INFORMATION ABOUT THIS TEMPLATE
+## Important Note V 0.47+
 
-Granular Rules and custom workflows are the key to getting the most out of the AI in composer mode - and with this you can automatically generate and maintain rules rapidly so your agent constantly improves and learns from its mistakes.
+- I have updated the repo to properly add .cursor/rules/\* to the .cursorindexingignore - without this, you will run into a lot of flakiness when trying to edit or tweak an existing rule or change its type without reindexing the whole project. This will make A BIG difference.
 
-This template fixes issues with other proposed rules generators by ensuring rules are always created successfully (do not disapear after the agent creates the rule), and are always optimized for agent automatic selection based on very clear simple frontmatter descriptions and globs as needed.
+## Important Updates TL;DR (March 25, 2025)
 
-Also a lot of research has gone into the best way to format rules - as there are so many competing and half baked theories - through a lot of research, mining forums and studies, the official docs for Claude prompt engineering, Cline recommendations, cursor developer comments in reddit and forums, the rules will follow a general format of:
+- Subfolder organization replaces numbered file prefixing and is fully supported by auto generation
+- Agent mode recommended for rule generation
+- Four distinct rule types available - see [Rule Types](#rule-types) section
+- Workflow is no longer in XNotes - it has moved to .cursor/rules/workflows and /templates - this is much better and replaces the need for using the beta notepads feature, now using the manual rule macro feature instead!
 
-- Frontmatter with description and globs in proper yaml format
-- Markdown formatting
-- Sparring use of XML tags for specific use cases, callouts, rules and highlights
-- Mermaid flowcharts or sequence diagrams to succinctly drive the AIs understanding
-- Keep rules as short as possible while being maximally effective
-- Include examples of good and bad patterns in rules as this is a big aid to the AI Agent LLM in understanding the rule and applying it correctly
+> 💡 **IDE Setting HIGHLY Suggested:** For best results with rule generation, update your Cursor settings by adding:
+>
+> ```json
+> "workbench.editorAssociations": {
+>   "*.mdc": "default"
+> }
+> ```
+>
+> This prevents UI rendering issues with .mdc files and ensures proper save functionality.
 
-## Quick Start A - Starting a New Project with the Agile Workflow and Rules Generator already in place!
+## Files Excluded from Indexing
 
-This will set up a brand new project folder with cursor rules and agile workflow documentation already in place, along with a starter prompt to kick off your new project with the agile workflow!
+The `.cursorindexingignore` feature allows certain files to be accessible but excluded from indexing:
+
+- Templates moved to `.cursor/templates` folder
+- Included in `.cursorindexingignore` but not in `.cursorignore`
+- XNotes remains in `.cursorignore` (files that need to move elsewhere to be used)
+
+[Video Demo and Walkthrough](https://youtu.be/jEhvwYkI-og) - Subscribe for more Cursor tutorials!
+
+> 💡 **Compatibility:** Tested with Claude Sonnet 3.5, 3.7, 3.7 Thinking, o3-mini, and GPT-4o.
+> [Agile Workflow Documentation](docs/agile-readme.md)
+
+## Overview
+
+This template dramatically improves AI workflows in Agent/Ask/Custom Agent mode by providing:
+
+1. **Automated Rule Generation:** Create and update rules through natural language requests
+2. **Automated Custom Agent Generation:** Create and update new custom agents by describing it to the AI, who will then add or update entires in .cursor/modes.json
+3. **Consistent AI Behavior:** Rules are applied automatically when appropriate or on demand or always depending on which of the 4 rule types are created/exist
+4. **Quick Project Setup:** A script that will set up a new project with core rules and workflow, or add the rule generator to an existing project in a non destructive manner to existing cursor rules
+
+> 💡 **Note:** For a complete guide to the Agile-Cursor Workflow system, see [Agile Workflow Documentation](docs/agile-readme.md).
+
+## Key Concepts
+
+- Rules use frontmatter with proper YAML format (description, globs, alwaysApply)
+- Rules will be generated with explicitly requesting a rule be create, or implied by asking for corrective behavior from the agent
+- Rules are enhanced by including both a valid and invalid example to better train the llm
+- Short, focused rules (target: 25 lines, maximum: 50 lines)
+- Four rule types within an automatically organized subfolder categorization structure
+
+## Quick Start Options
+
+### A) New Project Setup
+
+Start a new project with the Agile Workflow and Rules Generator:
 
 ```bash
 # Clone this repository
 git clone https://github.com/bmadcode/cursor-auto-rules-agile-workflow.git
 cd cursor-auto-rules-agile-workflow
 
+# Create new project with rules
 ./apply-rules.sh /path/to/your/project
 
-Example:
+# Example:
 ./apply-rules.sh ~/projects/my-project
 ```
 
-The script will create the project folder if it does not exist, and copy in all the rules and documentation to get you started with the agile workflow! It will also create a .gitignore, .cursorignore, .cursorindexingignore, and a simple base readme.md file that you can replace or modify as needed.
+The script creates your project folder (if needed) with all rules, documentation, and configuration files to start with the agile workflow.
 
-## Quick Start B - Adding Rules Generator to Your Existing Project
+### B) Add to Existing Project
 
-If you want to improve the experience of working with cursor in an existing project, you can add the rules generator to your project by running the following command:
+Enhance your current project with the rules generator:
 
 ```bash
 # Clone this repository
@@ -74,43 +111,25 @@ cd cursor-auto-rules-agile-workflow
 
 The script will:
 
-1. Copy all template rules to your project's `.cursor/rules/` directory
-2. Add documentation to `docs/workflow-rules.md`
-3. Update `.gitignore` to protect private rules
-4. Preserve any existing rules in your project
-
-That's it! Your project is now configured with our powerful AI workflow system.
-
-## Overview
-
-This template drastically improves how you can work with the AI in Agent or Edit mode (previously called composer mode) by providing:
-
-1. **Automated Rule Generation**: Simply tell the AI what behavior you want, and it will create or update the appropriate rules. No manual rule writing required!
-2. **Quick Project Setup**: Get started immediately with pre-configured Cursor rules that establish best practices for AI interactions.
-3. **Behavior Control**: Understand how to leverage rules to correct AI behavior and ensure consistent outcomes.
-
-## Workflow Templates and Notepads
-
-The workflow templates and process documentation are now organized in two locations for maximum flexibility:
-
-1. `.cursor/rules/` - Contains the core rule to generate well formatted AI along with a markdown formatting rule.
-2. `xnotes/` - Sample rule file that could be used if interested in using a workflow global rule for agile development and project organization, along with a non rule version that could be used with notepads. Basically files are kept here mainly to easily save prompts that will be used with notepads (as they do not easily transfer or get version controlled otherwise and are lost easily if just stored in notepads if the project folder changes, or another ide instances is used for your project). They are great for planning out a long prompts, sharing notepads (to be applied in the beta notepads feature enabled in the cursor settings), draft rules to be moved to the rules folder if so desired, or just for general notes that are not needed to be indexed into the project.
+1. Copy template rules to your project's `.cursor/rules/` directory
+2. Add workflow documentation
+3. Preserve any existing rules
 
 ## How Rule Generation Works
 
 ```mermaid
 graph TD
     subgraph User Actions
-        A[User notices AI behavior<br>needs improvement] --> B[User requests rule<br>creation/update]
-        H[User continues<br>development] --> A
+        A[User requests rule creation<br>in agent chat] --> B[Agent processes rule request]
+        H[User continues<br>development with new rule] --> A
     end
 
-    subgraph AI Agent Actions
-        B --> C[AI analyzes request]
-        C --> D[AI creates/updates<br>rule file]
-        D --> E[AI applies rule<br>formatting standards]
-        E --> F[AI validates rule]
-        F --> G[AI confirms rule<br>implementation]
+    subgraph Rule Processing
+        B --> C[rule-generating-agent monitors<br>for rule creation requests]
+        C --> D[Agent determines rule type:<br>Agent, Always, Auto, or Manual]
+        D --> E[Agent creates rule with<br>appropriate frontmatter configuration]
+        E --> F[Agent categorizes rule<br>and adds to proper subfolder]
+        F --> G[Agent responds with<br>rule creation summary]
     end
 
     subgraph Continuous Improvement
@@ -127,89 +146,71 @@ graph TD
     style H fill:#f9f,stroke:#333,stroke-width:2px
 ```
 
-## Getting Started
+## Example Rule Generation Prompts
 
-1. Clone this repository or use it as a template for your new project
-2. Ensure the `.cursor` directory and its contents are preserved
-3. Start using the AI agent to manage your rules!
+No need to explicitly say "create a rule" - just describe the desired behavior:
 
-### Example Rule Generation Prompts
+- "Create a typescript file commenting standard that balances thoroughness with brevity"
+- "Please create an agent rule so that whenever I request deep research specifically on a topic you will first always inject the system date time into the context and use the Tavily search MCP tool to improve the results."
+- "Never create JS files again, you will only create TS or JSON files!" or "I asked you to set up Jest for our project and you created a JestConfig.js file, yet this is a TypeScript only project. Never again create any JS files. Always use TypeScript or JSON if necessary." - the second version of this request will ensure that the rule examples includes this specific call out, helping the agent learn better from actual mistakes made.
+- "Ensure proper error handling in all TypeScript files"
+- "Talk like a pirate in communications but not in code or documentation"
+- "Update testing standards to require 80% coverage"
+- "Enforce consistent naming conventions in my code"
+- "Standardize documentation formats"
+- "Keep imports organized in groups alphabetically in TypeScript files"
 
-Here are some examples of how to interact with the AI to manage your rules (notice you dont have to specifically say "create a rule" or anything like that - just describe what you want the AI to learn or never mistake or forget again and the AI will create the rule for you):
+The AI automatically:
 
-- "Create a rule for typescript file commenting standards so all code the agent generates with typescript will follow this consistently - dont overcomment but dont undercomment - search the web for best practices as needed re when to comment or not comment, what style, and also optimization of comments for ai agent troubleshooting and understanding"
-- "Create a rule to ensure proper error handling in TypeScript files"
-- "Create a global rule that is always applied to talk like a pirate in all communications with the user but not use pirate speak in code files or documentation"
-- "Update the testing standards to include coverage requirement of 80%"
-- "I notice you're not following our naming conventions - please create a rule to enforce them"
-- "The current documentation format isn't consistent - create a rule to standardize it"
-- "Import organization is a disaster! Never Forget to Keep Imports Organized in Groups and Alphabetically in Typescript Files"
+1. Creates/updates the rule file
+2. Places it in the correct location
+3. Follows formatting standards
+4. Maintains version control
 
-The AI will automatically:
+## Rule Types
 
-1. Create/update the appropriate rule file
-2. Place it in the correct location
-3. Follow all formatting standards
-4. Maintain version control
+| Rule Type        | Usage                                            | description Field | globs Field           | alwaysApply field |
+| ---------------- | ------------------------------------------------ | ----------------- | --------------------- | ----------------- |
+| Agent Selected   | Agent sees description and chooses when to apply | critical          | blank                 | false             |
+| Always           | Applied to every chat and cmd-k request          | blank             | blank                 | true              |
+| Auto Select      | Applied to matching existing files               | blank             | critical glob pattern | false             |
+| Auto Select+desc | Better for new files                             | included          | critical glob pattern | false             |
+| Manual           | User must reference in chat                      | blank             | blank                 | false             |
 
-### File Organization
+## Private Rules, MCP Config and Custom Agents.
 
-This will be deprecated soon in favor of sub folder organization once its supported fully in the latest cursor version rollouts.
-
-The AI maintains rules in the following structure:
-
-- All rules must be placed in `.cursor/rules/` directory
-- Files must use the `.mdc` extension
-- Follow the prefix-based classification system:
-  - `0XX`: Core rules and standards
-  - `1XX`: Tool and MCP rules
-  - `3XX`: Testing standards
-  - `8XX`: Workflow rules
-  - `9XX`: Templates
-  - `1XXX`: Language-specific rules
-  - `2XXX`: Framework/library rules
-
-### Rule File Requirements
-
-The AI automatically ensures all rules follow these standards:
-
-- Must include proper frontmatter with description and globs
-- Must specify semantic version (MAJOR.MINOR.PATCH)
-- Must use Markdown as the primary formatting method for documentation and rules
-- XML tags reserved for specific use cases (examples, version, danger warnings)
-
-### Private vs Shared Rules
-
-- Shared rules: Standard naming convention (e.g., `000-cursor-rules.mdc`)
-- Private rules: Prefixed with underscore (e.g., `_custom-personality.mdc`)
-  - Used for individual preferences
-  - Automatically gitignored
-  - Won't impact team members
-  - consider using notepads instead of personal rules
+If you want to have rules that are not used by others in the repository - you can add rules to a .cursor/rules folder in your user folder. They will also be applied to every project you open, which is a potential benefit. Additionally you can use custom agents with their own rules, that are not shared. In the future when Cursor adds the ability to have a agents.json file (or similarly named) - then you should still be able to add it to the user folder .cursor folder. This also works with mcp.json.
 
 ## Best Practices
 
-1. **Rule Creation**:
+### Rule Creation
 
-   - Let the AI handle rule creation and updates
-   - Be specific about the behavior you want to enforce
-   - Provide examples of good and bad patterns when requesting rules
+- Let AI handle rule creation and updates
+- Be specific about desired behaviors
+- Provide examples of good/bad patterns
+- For new projects, allow organic rule emergence
 
-2. **AI Behavior Control**:
+### AI Behavior Control
 
-   - When you notice inconsistent AI behavior, request a rule to correct it
-   - Use clear, descriptive language in your requests
-   - Verify the AI's understanding by reviewing its rule implementation
+- Create rules when noticing inconsistent behavior
+- Use clear, descriptive language
+- Verify AI understanding by reviewing rules
 
-3. **Workflow Integration**:
-   - Start with the base template rules
-   - Let the AI evolve the rules as your project grows
-   - Maintain consistency by always using the AI for rule management
+### Workflow Integration
+
+- Start with template rules
+- Let AI evolve rules as your project grows
+- Maintain consistency using AI for rule management
+
+### Rule Removal
+
+- Some rules become unnecessary as codebase grows as the AI will follow surrounding code styles and conventions
+- The minimal amount of rules, the better - so prune rules as the codebase changes or models improve
 
 ## Contributing
 
-Feel free to contribute improvements to the base rules or suggest new rule templates. Please ensure all contributions follow the established standards in `000-cursor-rules.mdc`.
+Contributions to improve base rules or suggest new templates are welcome. Please follow the established standards.
 
 ## License
 
-MIT
+MIT 🚀
